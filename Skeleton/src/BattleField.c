@@ -20,7 +20,7 @@ void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
       newShip->health = BATTLE_CRUSER_HEALTH;
       newShip->damage = BATTLE_CRUSER_DAMAGE;
     }
-    vectorPush(&(battleField->terranFleet), &newShip);
+    vectorPush(&(battleField->terranFleet), newShip);
   }
 }
 
@@ -43,7 +43,7 @@ void generateProtossFleet(BattleField *battleField, const char *protossFleetStr)
       newShip->damage = CARRIER_DAMAGE;
       newShip->regenRate = CARRIER_SHIELD_REGENERATE_RATE;
     }
-    vectorPush(&(battleField->protossFleet), &newShip);
+    vectorPush(&(battleField->protossFleet), newShip);
   }
 }
 
