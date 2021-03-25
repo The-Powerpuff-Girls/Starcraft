@@ -13,6 +13,8 @@ add_executable(
         ${INC_DIR}/Defines.h
         ${INC_DIR}/Vector.h
         ${INC_DIR}/BattleField.h
+        ${INC_DIR}/ProtossShip.h
+        ${INC_DIR}/TerranShip.h
         
         ${SRC_DIR}/main.c
         ${SRC_DIR}/Vector.c
