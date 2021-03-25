@@ -11,37 +11,25 @@ void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
   for ( ; *terranFleetStr != '\0' ; terranFleetStr++) {
     TerranShip *newShip = (TerranShip*) malloc(sizeof(TerranShip));
     if (*terranFleetStr == 'v') {
-      newShip->type = VIKING;
-      newShip->health = VIKING_HEALTH;
-      newShip->damage = VIKING_DAMAGE;
+      initializeViking(newShip);
     }
     else if (*terranFleetStr == 'b') {
-      newShip->type = BATTLE_CRUSER;
-      newShip->health = BATTLE_CRUSER_HEALTH;
-      newShip->damage = BATTLE_CRUSER_DAMAGE;
+      initializeBattleCruiser(newShip);
     }
     vectorPush(&(battleField->terranFleet), newShip);
   }
 }
 
-void generateProtossFleet(BattleField *battleField, const char *protossFleetStr){
+void generateProtossFleet(BattleField *battleField, const char *protossFleetStr) {
   vectorInit(&(battleField->protossFleet), strlen(protossFleetStr));
 
   for ( ; *protossFleetStr != '\0' ; protossFleetStr++) {
     ProtossShip *newShip = (ProtossShip*)malloc(sizeof(ProtossShip));
     if(*protossFleetStr == 'p') {
-      newShip->type = PHOENIX;
-      newShip->health = PHOENIX_HEALTH;
-      newShip->shield = PHOENIX_SHIELD;
-      newShip->damage = PHOENIX_DAMAGE;      
-      newShip->regenRate = PHOENIX_SHIELD_REGENERATE_RATE;
+      initializePhoenix(newShip);
     } 
     else if (*protossFleetStr == 'c') {
-      newShip->type = CARRIER;
-      newShip->health = CARRIER_HEALTH;
-      newShip->shield = CARRIER_SHIELD;
-      newShip->damage = CARRIER_DAMAGE;
-      newShip->regenRate = CARRIER_SHIELD_REGENERATE_RATE;
+      initializeCarrier(newShip);
     }
     vectorPush(&(battleField->protossFleet), newShip);
   }
