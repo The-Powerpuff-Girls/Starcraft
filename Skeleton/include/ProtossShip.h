@@ -8,18 +8,9 @@ typedef struct{
   int regenRate;
 } ProtossShip;
 
-ProtossShip const phoenixPrototype = {
-  .type = PHOENIX,
-  .health = PHOENIX_HEALTH,
-  .shield = PHOENIX_SHIELD,
-  .damage = PHOENIX_DAMAGE,
-  .regenRate = PHOENIX_SHIELD_REGENERATE_RATE
-};
+void initializePhoenix(ProtossShip *newShip);
 
-ProtossShip const carrierPrototype = {
-  .type = CARRIER,
-  .health = CARRIER_HEALTH,
-  .shield = CARRIER_SHIELD,
-  .damage = CARRIER_DAMAGE,
-  .regenRate = CARRIER_SHIELD_REGENERATE_RATE
-};
+void initializeCarrier(ProtossShip *newShip);
+
+
+

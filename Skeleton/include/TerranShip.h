@@ -6,14 +6,6 @@ typedef struct {
   int damage;
 } TerranShip;
 
-TerranShip vikingPrototype = {
-  .type = VIKING,
-  .health = VIKING_HEALTH,
-  .damage = VIKING_DAMAGE
-};
+void initializeViking(TerranShip *newShip);
 
-TerranShip battleCruserPrototype = {
-  .type = BATTLE_CRUSER,
-  .health = BATTLE_CRUSER_HEALTH,
-  .damage = BATTLE_CRUSER_DAMAGE
-};
+void initializeBattleCruiser(TerranShip *newShip);
