@@ -29,7 +29,12 @@ enum CarrierDefines {
 };
 
 enum BattleCruserDefines {
-  YAMATO_CANNON_LOADING_TURNS = 4
+  YAMATO_CANNON_LOADING_TURNS = 5,
+  YAMATO_CANNON_BONUS = 5
 };
+
+enum VikingDefines {
+  VIKING_VS_PHOENIX_BONUS = 2
+}
 
 #endif /* DEFINES_H_ */

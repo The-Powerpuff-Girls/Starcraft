@@ -5,12 +5,11 @@ typedef struct{
   int health;
   int shield;
   int damage;
-  int regenRate;
 } ProtossShip;
 
 void initializePhoenix(ProtossShip *newShip);
-
 void initializeCarrier(ProtossShip *newShip);
 
-
-
+void phoenixAttack(TerranShip *enemy);
+void carrierAttack(TerranShip *enemy);
+void protossRegen(ProtossShip *self);

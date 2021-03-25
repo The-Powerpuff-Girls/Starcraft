@@ -64,8 +64,8 @@ void vectorDelete(Vector *vec, size_t idx) {
   vec->items[idx] = NULL;
 
   for (size_t i = idx; i < vec->size - 1; ++i) {
-      vec->items[i] = vec->items[i + 1];
-      vec->items[i + 1] = NULL;
+    vec->items[i] = vec->items[i + 1];
+    vec->items[i + 1] = NULL;
   }
 
   vec->size--;

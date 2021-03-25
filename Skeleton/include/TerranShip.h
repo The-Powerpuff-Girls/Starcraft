@@ -7,5 +7,7 @@ typedef struct {
 } TerranShip;
 
 void initializeViking(TerranShip *newShip);
-
 void initializeBattleCruiser(TerranShip *newShip);
+
+void vikingAttack(ProtossShip *enemy);
+void battleCruserAttack(ProtossShip *enemy, int yamatoLoadingTurns);
