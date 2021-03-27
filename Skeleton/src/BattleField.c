@@ -49,6 +49,24 @@ void startBattle(BattleField *battleField) {
 }
 
 void deinit(BattleField *battleField) {
+  Ship *ship;
+
+  /* free terranFleet */
+  while (!vectorIsEmpty(&(battleField->terranFleet))) {
+    ship = (Ship *) vectorBack(&(battleField->terranFleet));
+    vectorPop(&(battleField->terranFleet));
+    free(ship);
+  }
+
+  /* free protossFleet */
+  while (!vectorIsEmpty(&(battleField->protossFleet))) {
+    ship = (Ship *) vectorBack(&(battleField->protossFleet));
+    vectorPop(&(battleField->protossFleet));
+    free(ship);
+  }
+
+  vectorFree(&(battleField->terranFleet));
+  vectorFree(&(battleField->protossFleet));
 }
 
 bool processTerranTurn(BattleField *battleField) {
