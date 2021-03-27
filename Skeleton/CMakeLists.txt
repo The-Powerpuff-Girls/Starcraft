@@ -18,6 +18,8 @@ add_executable(
         ${SRC_DIR}/main.c
         ${SRC_DIR}/Vector.c
         ${SRC_DIR}/BattleField.c
+        ${SRC_DIR}/Protoss.c
+        ${SRC_DIR}/Terran.c
 )
 
 target_include_directories(

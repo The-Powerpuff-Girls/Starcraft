@@ -63,11 +63,11 @@ bool processTerranTurn(BattleField *battleField) {
     attacker = (Ship *) vectorGet(terFleet, i);
 
     if (attacker->type == VIKING) {
-      vikingAttack(enemy);  
-      handleDestroyedShip(&enemy, protFleet, "Viking", (int) i);
+      vikingAttack(enemy);
+      handleDestroyedShip(&enemy, protFleet, &enemyID, "Viking", (int) i);
     } else if (attacker->type == BATTLE_CRUSER) {
       battleCruserAttack(enemy, cannonProgress);
-      handleDestroyedShip(&enemy, protFleet, "BattleCruser", (int) i);
+      handleDestroyedShip(&enemy, protFleet, &enemyID, "BattleCruser", (int) i);
     }
 
     if (vectorIsEmpty(protFleet)) {
@@ -79,14 +79,12 @@ bool processTerranTurn(BattleField *battleField) {
   return false;
 }
 
-void handleDestroyedShip(Ship **enemy, Vector *fleet, char *attackerString, int attackerID) {
+void handleDestroyedShip(Ship **enemy, Vector *fleet, int *enemyID, char *attackerString, int attackerID) {
   if ((*enemy)->health <= 0) {
-
-    int enemyID = vectorGetSize(fleet) - 1;
-    printf("%s with ID: %d killed enemy airship with ID: %d\n", attackerString, attackerID, enemyID);
+    printf("%s with ID: %d killed enemy airship with ID: %d\n", attackerString, attackerID, *enemyID);
     vectorPop(fleet);
     free(*enemy);
-
+    (*enemyID)--;
     *enemy = (Ship *) vectorBack(fleet);
   }
 }
@@ -103,7 +101,7 @@ bool processProtossTurn(BattleField *battleField) {
 
     if (attacker->type == PHOENIX) {
       phoenixAttack(enemy);
-      handleDestroyedShip(&enemy, protFleet, "Phoenix", (int) i);
+      handleDestroyedShip(&enemy, terFleet, &enemyID, "Phoenix", (int) i);
     } else if (attacker->type == CARRIER) {
       int attacks;
       if (attacker->health == CARRIER_HEALTH) {
@@ -113,7 +111,7 @@ bool processProtossTurn(BattleField *battleField) {
       }
       for (int j = 0; j < attacks; j++) {
         carrierAttack(enemy);
-        handleDestroyedShip(&enemy, protFleet, "Carrier", (int) i);
+        handleDestroyedShip(&enemy, terFleet, &enemyID, "Carrier", (int) i);
         if (enemy == NULL) {
           break;
         }

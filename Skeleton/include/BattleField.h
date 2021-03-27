@@ -20,6 +20,6 @@ void deinit(BattleField *battleField);
 bool processTerranTurn(BattleField *battleField);
 bool processProtossTurn(BattleField *battleField);
 
-void handleDestroyedShip(Ship **enemy, Vector *fleet, char *attackerString, int attackerID);
+void handleDestroyedShip(Ship **enemy, Vector *fleet, int *enemyID, char *attackerString, int attackerID);
 
 #endif /* BATTLEFIELD_H_ */

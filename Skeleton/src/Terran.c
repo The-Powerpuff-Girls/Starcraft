@@ -1,13 +1,6 @@
-<<<<<<< Updated upstream
-#include "../include/TerranShip.h"
-#include "../include/ProtossShip.h"
-
-void initializeViking(TerranShip *newShip) {
-=======
 #include "Ships.h"
 
 void initializeViking(Ship *newShip) {
->>>>>>> Stashed changes
   newShip->type = VIKING;
   newShip->health = VIKING_HEALTH;
 }
