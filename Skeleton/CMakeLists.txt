@@ -13,8 +13,7 @@ add_executable(
         ${INC_DIR}/Defines.h
         ${INC_DIR}/Vector.h
         ${INC_DIR}/BattleField.h
-        ${INC_DIR}/ProtossShip.h
-        ${INC_DIR}/TerranShip.h
+        ${INC_DIR}/Ships.h 
         
         ${SRC_DIR}/main.c
         ${SRC_DIR}/Vector.c
@@ -28,4 +27,4 @@ target_include_directories(
 )  
 
 set_target_c_standard(${PROJECT_NAME} 11)
-enable_target_c_warnings(${PROJECT_NAME})
+#enable_target_c_warnings(${PROJECT_NAME})

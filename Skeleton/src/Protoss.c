@@ -1,29 +1,26 @@
-#include "../include/ProtossShip.h"
-#include "../include/TerranShip.h"
+#include "Ships.h"
 
-void initializePhoenix(ProtossShip *newShip) {
+void initializePhoenix(Ship *newShip) {
   newShip->type = PHOENIX;
   newShip->health = PHOENIX_HEALTH;
   newShip->shield = PHOENIX_SHIELD;
-  newShip->damage = PHOENIX_DAMAGE;
 }
 
-void initializeCarrier(ProtossShip *newShip) {
+void initializeCarrier(Ship *newShip) {
   newShip->type = CARRIER;
   newShip->health = CARRIER_HEALTH;
   newShip->shield = CARRIER_SHIELD;
-  newShip->damage = CARRIER_DAMAGE;
 }
 
-void phoenixAttack(TerranShip *enemy) {
+void phoenixAttack(Ship *enemy) {
   enemy->health -= PHOENIX_DAMAGE;
 }
 
-void carrierAttack(TerranShip *enemy) {
+void carrierAttack(Ship *enemy) {
   enemy->health -= CARRIER_DAMAGE;
 }
 
-void protossRegen(ProtossShip *self) {
+void protossRegen(Ship *self) {
   if (self->type == PHOENIX) {
     self->shield += PHOENIX_SHIELD_REGENERATE_RATE;
     if (self->shield > PHOENIX_SHIELD) {
