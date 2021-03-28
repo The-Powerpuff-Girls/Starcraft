@@ -7,12 +7,12 @@
 void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
   vectorInit(&(battleField->terranFleet), strlen(terranFleetStr));
 
-  for ( ; *terranFleetStr != '\0'; terranFleetStr++) {
+  for (int i = 0; terranFleetStr[i] != '\0'; i++) {
     Ship *newShip = (Ship *) malloc(sizeof(Ship));
     if (*terranFleetStr == 'v') {
-      initializeViking(newShip);
+      initializeViking(newShip, i);
     } else if (*terranFleetStr == 'b') {
-      initializeBattleCruiser(newShip);
+      initializeBattleCruiser(newShip, i);
     }
     vectorPush(&(battleField->terranFleet), newShip);
   }
@@ -21,12 +21,12 @@ void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
 void generateProtossFleet(BattleField *battleField, const char *protossFleetStr) {
   vectorInit(&(battleField->protossFleet), strlen(protossFleetStr));
 
-  for ( ; *protossFleetStr != '\0'; protossFleetStr++) {
+  for (int i = 0; protossFleetStr[i] != '\0'; i++) {
     Ship *newShip = (Ship *) malloc(sizeof(Ship));
     if (*protossFleetStr == 'p') {
-      initializePhoenix(newShip);
+      initializePhoenix(newShip, i);
     } else if (*protossFleetStr == 'c') {
-      initializeCarrier(newShip);
+      initializeCarrier(newShip, i);
     }
     vectorPush(&(battleField->protossFleet), newShip);
   }
@@ -43,6 +43,79 @@ void startBattle(BattleField *battleField) {
       printf("PROTOSS has won!\n");
       break;
     }
+  }
+}
+
+bool processTerranTurn(BattleField *battleField) {
+  Vector *terFleet = &(battleField->terranFleet);
+  Vector *protFleet = &(battleField->protossFleet);
+  Ship *attacker;
+  Ship *enemy = (Ship*) vectorBack(protFleet);
+  static int cannonProgress = 1; /* Needed for Yamato cannon */
+
+  for (size_t i = 0; i < vectorGetSize(terFleet); i++) {
+    attacker = (Ship *) vectorGet(terFleet, i);
+
+    if (attacker->type == VIKING) {
+      vikingAttack(enemy);
+      handleDestroyedShip(&enemy, protFleet, "Viking", attacker->id);
+    } else if (attacker->type == BATTLE_CRUSER) {
+      battleCruserAttack(enemy, cannonProgress);
+      handleDestroyedShip(&enemy, protFleet, "BattleCruser", attacker->id);
+    }
+
+    if (vectorIsEmpty(protFleet)) {
+      return true;
+    }
+  }
+  cannonProgress++;
+  printf("Last Protoss AirShip with ID: %d has %d health and %d shield left\n", enemy->id, enemy->health, enemy->shield);
+  return false;
+}
+
+bool processProtossTurn(BattleField *battleField) {
+  Vector *terFleet = &(battleField->terranFleet);
+  Vector *protFleet = &(battleField->protossFleet);
+  Ship *attacker;
+  Ship *enemy = (Ship*) vectorBack(terFleet);
+
+  for (size_t i = 0; i < vectorGetSize(protFleet); i++) {
+    attacker = (Ship*) vectorGet(protFleet, i);
+
+    if (attacker->type == PHOENIX) {
+      phoenixAttack(enemy);
+      handleDestroyedShip(&enemy, terFleet, "Phoenix", attacker->id);
+    } else if (attacker->type == CARRIER) {
+      int attacks;
+      if (attacker->health == CARRIER_HEALTH) {
+        attacks = MAX_INTERCEPTORS;
+      } else {
+        attacks = DAMAGED_STATUS_INTERCEPTORS;
+      }
+      for (int j = 0; j < attacks; j++) {
+        carrierAttack(enemy);
+        handleDestroyedShip(&enemy, terFleet, "Carrier", attacker->id);
+        if (vectorIsEmpty(terFleet)) {
+          return true;
+        }
+      }
+    }
+
+    if (vectorIsEmpty(terFleet)) {
+      return true;
+    }
+    protossRegen(attacker);
+  }
+  printf("Last Terran AirShip with ID: %d has %d health left\n", enemy->id, enemy->health);
+  return false;
+}
+
+void handleDestroyedShip(Ship **enemy, Vector *fleet, char *attackerString, int attackerID) {
+  if ((*enemy)->health <= 0) {
+    printf("%s with ID: %d killed enemy airship with ID: %d\n", attackerString, attackerID, (*enemy)->id);
+    vectorPop(fleet);
+    free(*enemy);
+    *enemy = (Ship *) vectorBack(fleet);
   }
 }
 
@@ -65,81 +138,5 @@ void deinit(BattleField *battleField) {
 
   vectorFree(&(battleField->terranFleet));
   vectorFree(&(battleField->protossFleet));
-}
-
-bool processTerranTurn(BattleField *battleField) {
-  Vector *terFleet = &(battleField->terranFleet);
-  Vector *protFleet = &(battleField->protossFleet);
-  Ship *attacker;
-  Ship *enemy = (Ship*) vectorBack(protFleet);
-  int enemyID = vectorGetSize(protFleet) - 1;
-  static int cannonProgress = 1; /* Needed for Yamato cannon */
-
-  for (size_t i = 0; i < vectorGetSize(terFleet); i++) {
-    attacker = (Ship *) vectorGet(terFleet, i);
-
-    if (attacker->type == VIKING) {
-      vikingAttack(enemy);
-      handleDestroyedShip(&enemy, protFleet, &enemyID, "Viking", (int) i);
-    } else if (attacker->type == BATTLE_CRUSER) {
-      battleCruserAttack(enemy, cannonProgress);
-      handleDestroyedShip(&enemy, protFleet, &enemyID, "BattleCruser", (int) i);
-    }
-
-    if (vectorIsEmpty(protFleet)) {
-      return true;
-    }
-  }
-  cannonProgress++;
-  printf("Last Protoss AirShip with ID: %d has %d health and %d shield left\n", enemyID, enemy->health, enemy->shield);
-  return false;
-}
-
-void handleDestroyedShip(Ship **enemy, Vector *fleet, int *enemyID, char *attackerString, int attackerID) {
-  if ((*enemy)->health <= 0) {
-    printf("%s with ID: %d killed enemy airship with ID: %d\n", attackerString, attackerID, *enemyID);
-    vectorPop(fleet);
-    free(*enemy);
-    (*enemyID)--;
-    *enemy = (Ship *) vectorBack(fleet);
-  }
-}
-
-bool processProtossTurn(BattleField *battleField) {
-  Vector *terFleet = &(battleField->terranFleet);
-  Vector *protFleet = &(battleField->protossFleet);
-  Ship *attacker;
-  Ship *enemy = (Ship*) vectorBack(terFleet);
-  int enemyID = vectorGetSize(terFleet) - 1;
-
-  for (size_t i = 0; i < vectorGetSize(protFleet); i++) {
-    attacker = (Ship*) vectorGet(protFleet, i);
-
-    if (attacker->type == PHOENIX) {
-      phoenixAttack(enemy);
-      handleDestroyedShip(&enemy, terFleet, &enemyID, "Phoenix", (int) i);
-    } else if (attacker->type == CARRIER) {
-      int attacks;
-      if (attacker->health == CARRIER_HEALTH) {
-        attacks = MAX_INTERCEPTORS;
-      } else {
-        attacks = DAMAGED_STATUS_INTERCEPTORS;
-      }
-      for (int j = 0; j < attacks; j++) {
-        carrierAttack(enemy);
-        handleDestroyedShip(&enemy, terFleet, &enemyID, "Carrier", (int) i);
-        if (vectorIsEmpty(terFleet)) {
-          return true;
-        }
-      }
-    }
-
-    if (vectorIsEmpty(terFleet)) {
-      return true;
-    }
-    protossRegen(attacker);
-  }
-  printf("Last Terran AirShip with ID: %d has %d health left\n", enemyID, enemy->health);
-  return false;
 }
 

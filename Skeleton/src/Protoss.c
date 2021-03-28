@@ -1,13 +1,15 @@
 #include "Ships.h"
 
-void initializePhoenix(Ship *newShip) {
+void initializePhoenix(Ship *newShip, int id) {
   newShip->type = PHOENIX;
+  newShip->id = id;
   newShip->health = PHOENIX_HEALTH;
   newShip->shield = PHOENIX_SHIELD;
 }
 
-void initializeCarrier(Ship *newShip) {
+void initializeCarrier(Ship *newShip, int id) {
   newShip->type = CARRIER;
+  newShip->id = id;
   newShip->health = CARRIER_HEALTH;
   newShip->shield = CARRIER_SHIELD;
 }
