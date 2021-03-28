@@ -35,6 +35,6 @@ enum BattleCruserDefines {
 
 enum VikingDefines {
   VIKING_VS_PHOENIX_BONUS = 2
-}
+};
 
 #endif /* DEFINES_H_ */

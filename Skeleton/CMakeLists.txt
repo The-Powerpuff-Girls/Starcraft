@@ -13,12 +13,13 @@ add_executable(
         ${INC_DIR}/Defines.h
         ${INC_DIR}/Vector.h
         ${INC_DIR}/BattleField.h
-        ${INC_DIR}/ProtossShip.h
-        ${INC_DIR}/TerranShip.h
+        ${INC_DIR}/Ships.h 
         
         ${SRC_DIR}/main.c
         ${SRC_DIR}/Vector.c
         ${SRC_DIR}/BattleField.c
+        ${SRC_DIR}/Protoss.c
+        ${SRC_DIR}/Terran.c
 )
 
 target_include_directories(

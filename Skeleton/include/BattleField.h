@@ -2,8 +2,8 @@
 #define BATTLEFIELD_H_
 
 #include <stdbool.h>
-
 #include "Vector.h"
+#include "Ships.h"
 
 typedef struct {
   Vector terranFleet;
@@ -19,5 +19,7 @@ void deinit(BattleField *battleField);
 
 bool processTerranTurn(BattleField *battleField);
 bool processProtossTurn(BattleField *battleField);
+
+void handleDestroyedShip(Ship **enemy, Vector *fleet, int *enemyID, char *attackerString, int attackerID);
 
 #endif /* BATTLEFIELD_H_ */
