@@ -9,9 +9,9 @@ void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
 
   for (int i = 0; terranFleetStr[i] != '\0'; i++) {
     Ship *newShip = (Ship *) malloc(sizeof(Ship));
-    if (*terranFleetStr == 'v') {
+    if (terranFleetStr[i] == 'v') {
       initializeViking(newShip, i);
-    } else if (*terranFleetStr == 'b') {
+    } else if (terranFleetStr[i] == 'b') {
       initializeBattleCruiser(newShip, i);
     }
     vectorPush(&(battleField->terranFleet), newShip);
@@ -23,9 +23,9 @@ void generateProtossFleet(BattleField *battleField, const char *protossFleetStr)
 
   for (int i = 0; protossFleetStr[i] != '\0'; i++) {
     Ship *newShip = (Ship *) malloc(sizeof(Ship));
-    if (*protossFleetStr == 'p') {
+    if (protossFleetStr[i] == 'p') {
       initializePhoenix(newShip, i);
-    } else if (*protossFleetStr == 'c') {
+    } else if (protossFleetStr[i] == 'c') {
       initializeCarrier(newShip, i);
     }
     vectorPush(&(battleField->protossFleet), newShip);
@@ -139,4 +139,3 @@ void deinit(BattleField *battleField) {
   vectorFree(&(battleField->terranFleet));
   vectorFree(&(battleField->protossFleet));
 }
-
