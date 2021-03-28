@@ -46,27 +46,6 @@ void startBattle(BattleField *battleField) {
   }
 }
 
-void deinit(BattleField *battleField) {
-  Ship *ship;
-
-  /* free terranFleet */
-  while (!vectorIsEmpty(&(battleField->terranFleet))) {
-    ship = (Ship *) vectorBack(&(battleField->terranFleet));
-    vectorPop(&(battleField->terranFleet));
-    free(ship);
-  }
-
-  /* free protossFleet */
-  while (!vectorIsEmpty(&(battleField->protossFleet))) {
-    ship = (Ship *) vectorBack(&(battleField->protossFleet));
-    vectorPop(&(battleField->protossFleet));
-    free(ship);
-  }
-
-  vectorFree(&(battleField->terranFleet));
-  vectorFree(&(battleField->protossFleet));
-}
-
 bool processTerranTurn(BattleField *battleField) {
   Vector *terFleet = &(battleField->terranFleet);
   Vector *protFleet = &(battleField->protossFleet);
@@ -93,16 +72,6 @@ bool processTerranTurn(BattleField *battleField) {
   cannonProgress++;
   printf("Last Protoss AirShip with ID: %d has %d health and %d shield left\n", enemyID, enemy->health, enemy->shield);
   return false;
-}
-
-void handleDestroyedShip(Ship **enemy, Vector *fleet, int *enemyID, char *attackerString, int attackerID) {
-  if ((*enemy)->health <= 0) {
-    printf("%s with ID: %d killed enemy airship with ID: %d\n", attackerString, attackerID, *enemyID);
-    vectorPop(fleet);
-    free(*enemy);
-    (*enemyID)--;
-    *enemy = (Ship *) vectorBack(fleet);
-  }
 }
 
 bool processProtossTurn(BattleField *battleField) {
@@ -143,3 +112,33 @@ bool processProtossTurn(BattleField *battleField) {
   return false;
 }
 
+void handleDestroyedShip(Ship **enemy, Vector *fleet, int *enemyID, char *attackerString, int attackerID) {
+  if ((*enemy)->health <= 0) {
+    printf("%s with ID: %d killed enemy airship with ID: %d\n", attackerString, attackerID, *enemyID);
+    vectorPop(fleet);
+    free(*enemy);
+    (*enemyID)--;
+    *enemy = (Ship *) vectorBack(fleet);
+  }
+}
+
+void deinit(BattleField *battleField) {
+  Ship *ship;
+
+  /* free terranFleet */
+  while (!vectorIsEmpty(&(battleField->terranFleet))) {
+    ship = (Ship *) vectorBack(&(battleField->terranFleet));
+    vectorPop(&(battleField->terranFleet));
+    free(ship);
+  }
+
+  /* free protossFleet */
+  while (!vectorIsEmpty(&(battleField->protossFleet))) {
+    ship = (Ship *) vectorBack(&(battleField->protossFleet));
+    vectorPop(&(battleField->protossFleet));
+    free(ship);
+  }
+
+  vectorFree(&(battleField->terranFleet));
+  vectorFree(&(battleField->protossFleet));
+}
