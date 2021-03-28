@@ -7,12 +7,11 @@
 void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
   vectorInit(&(battleField->terranFleet), strlen(terranFleetStr));
 
-  for ( ; *terranFleetStr != '\0' ; terranFleetStr++) {
-    Ship *newShip = (Ship*) malloc(sizeof(Ship));
+  for ( ; *terranFleetStr != '\0'; terranFleetStr++) {
+    Ship *newShip = (Ship *) malloc(sizeof(Ship));
     if (*terranFleetStr == 'v') {
       initializeViking(newShip);
-    }
-    else if (*terranFleetStr == 'b') {
+    } else if (*terranFleetStr == 'b') {
       initializeBattleCruiser(newShip);
     }
     vectorPush(&(battleField->terranFleet), newShip);
@@ -22,12 +21,11 @@ void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
 void generateProtossFleet(BattleField *battleField, const char *protossFleetStr) {
   vectorInit(&(battleField->protossFleet), strlen(protossFleetStr));
 
-  for ( ; *protossFleetStr != '\0' ; protossFleetStr++) {
-    Ship *newShip = (Ship*)malloc(sizeof(Ship));
-    if(*protossFleetStr == 'p') {
+  for ( ; *protossFleetStr != '\0'; protossFleetStr++) {
+    Ship *newShip = (Ship *) malloc(sizeof(Ship));
+    if (*protossFleetStr == 'p') {
       initializePhoenix(newShip);
-    } 
-    else if (*protossFleetStr == 'c') {
+    } else if (*protossFleetStr == 'c') {
       initializeCarrier(newShip);
     }
     vectorPush(&(battleField->protossFleet), newShip);
@@ -130,11 +128,12 @@ bool processProtossTurn(BattleField *battleField) {
       for (int j = 0; j < attacks; j++) {
         carrierAttack(enemy);
         handleDestroyedShip(&enemy, terFleet, &enemyID, "Carrier", (int) i);
-        if (enemy == NULL) {
-          break;
+        if (vectorIsEmpty(terFleet)) {
+          return true;
         }
       }
     }
+
     if (vectorIsEmpty(terFleet)) {
       return true;
     }
