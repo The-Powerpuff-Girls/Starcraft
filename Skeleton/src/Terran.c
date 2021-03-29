@@ -28,9 +28,11 @@ void vikingAttack(Ship *enemy) {
   }
 }
 
+/* Yamato Loading Turns is the current Terran turn, same for each battle cruiser */
 void battleCruserAttack(Ship *enemy, int yamatoLoadingTurns) {
   int damage = BATTLE_CRUSER_DAMAGE;
 
+  /* Bonus damage every X number of turns */
   if (yamatoLoadingTurns % YAMATO_CANNON_LOADING_TURNS == 0) {
     damage *= YAMATO_CANNON_BONUS;
   }
