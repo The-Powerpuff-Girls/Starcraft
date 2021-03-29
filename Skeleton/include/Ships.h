@@ -12,11 +12,15 @@ typedef struct {
 
 void initializeViking(Ship *newShip, int id);
 void initializeBattleCruiser(Ship *newShip, int id);
+
 void initializePhoenix(Ship *newShip, int id);
 void initializeCarrier(Ship *newShip, int id);
 
+/* Attacks */
+
 void vikingAttack(Ship *enemy);
 void battleCruserAttack(Ship *enemy, int yamatoLoadingTurns);
+
 void phoenixAttack(Ship *enemy);
 void carrierAttack(Ship *enemy);
 void protossRegen(Ship *self);
