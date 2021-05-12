@@ -6,6 +6,11 @@ void vectorInit(Vector *vec, size_t initialCapacity) {
   vec->capacity = initialCapacity;
   vec->size = 0;
   vec->items = malloc(sizeof(void*) * vec->capacity);
+  /*error message in case malloc fails*/
+  if (vec->items == NULL){ 
+		perror("Error: ");
+		exit(EXIT_FAILURE);
+	}
 }
 
 size_t vectorGetSize(Vector *v) {
@@ -21,7 +26,11 @@ void vectorResize(Vector *vec, size_t capacity) {
   if (items) {
     vec->items = items;
     vec->capacity = capacity;
+  } else { /* in case reallocation fails */
+    perror("Error: ");
+		exit(EXIT_FAILURE);
   }
+
   if (vec->size >= capacity) {
     vec->size = capacity;
   }

@@ -11,6 +11,11 @@ void generateTerranFleet(BattleField *battleField, const char *terranFleetStr) {
 
   for (int i = 0; terranFleetStr[i] != '\0'; i++) {
     Ship *newShip = (Ship *) malloc(sizeof(Ship));
+    /*in case malloc fails*/
+    if (newShip == NULL){
+		  perror("Error: ");
+		  exit(EXIT_FAILURE);
+	  }
 
     if (terranFleetStr[i] == 'v') {
       initializeViking(newShip, i);
@@ -29,6 +34,10 @@ void generateProtossFleet(BattleField *battleField, const char *protossFleetStr)
 
   for (int i = 0; protossFleetStr[i] != '\0'; i++) {
     Ship *newShip = (Ship *) malloc(sizeof(Ship));
+    if (newShip == NULL){
+		  perror("Error: ");
+		  exit(EXIT_FAILURE);
+	  }
     
     if (protossFleetStr[i] == 'p') {
       initializePhoenix(newShip, i);
@@ -159,4 +168,16 @@ void deinit(BattleField *battleField) {
 
   vectorFree(&(battleField->terranFleet));
   vectorFree(&(battleField->protossFleet));
+
+  /*error msg if vector is not free */
+  if(!vectorIsEmpty(&battleField->protossFleet)){
+    perror("Error:");
+    exit(1);
+  }
+
+  /*error msg if vector is not free */
+  if(!vectorIsEmpty(&battleField->terranFleet)){
+    perror("Error:");
+    exit(1);
+  }
 }
